@@ -17,7 +17,12 @@ model = BinaryQuadraticModel(f)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()
-client.token = "YOUR_TOKEN"
+
+token_file = "./token.txt"
+with open(token_file) as f:
+    client.token = f.readline()
+f.close()
+
 client.parameters.timeout = 1000  # タイムアウト1秒
 
 # ソルバーの実行

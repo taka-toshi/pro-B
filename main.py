@@ -7,6 +7,12 @@ from amplify import (
 )
 from amplify.client import FixstarsClient
 
+my_token = ""
+token_file = "./token.txt"
+with open(token_file) as f:
+    my_token = f.readline()
+f.close()
+
 # ========================================================
 T = 5 # 0-4の5日間
 C = 3 # c = 0 : ズボン, c = 1 : トップス, c = 2 :アウター
@@ -42,12 +48,7 @@ model = BinaryQuadraticModel(f)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()
-
-token_file = "./token.txt"
-with open(token_file) as f:
-    client.token = f.readline()
-f.close()
-
+client.token = my_token
 client.parameters.timeout = 1000  # タイムアウト1秒
 
 # ソルバーの実行

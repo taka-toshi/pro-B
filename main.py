@@ -1,3 +1,4 @@
+import random
 from amplify import (
     BinaryPoly,
     BinaryQuadraticModel,
@@ -5,6 +6,30 @@ from amplify import (
     SymbolGenerator,
 )
 from amplify.client import FixstarsClient
+
+# ========================================================
+T = 5 # 0-4の5日間
+C = 3 # c = 0 : ズボン, c = 1 : トップス, c = 2 :アウター
+K = 5 # 0-4の種類
+
+W = [0] * T #各日の必要な暖かさ
+for t in range(T):
+    W[t] = random.randint(10,50)
+
+w = [[0] * K for _ in range(C)] #各種類の暖かさ
+M = [0] * C # 各cについてwのmax
+m = [0] * C # 各cについてwのmin
+for c in range(C):
+    for k in range(K):
+        w[c][k] = random.randint(3,17)
+    M[c] = max(w[c])
+    m[c] = min(w[c])
+
+w_bar = [[0] * K for _ in range(C)] #各種類の暖かさ　標準化
+for c in range(C):
+    for k in range(K):
+        w_bar[c][k] = (w[c][k] - m[c]) / (M[c] - m[c])
+# ========================================================
 
 # 変数配列の生成
 gen = SymbolGenerator(BinaryPoly)

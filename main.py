@@ -41,7 +41,7 @@ f = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c
 g = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
 # 目的関数の設定
 # 暖かさ
-h = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k]) - W[t])) ** 2)
+h = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
 model = BinaryQuadraticModel(f+g+h)
 
@@ -57,3 +57,4 @@ result = solver.solve(model)
 # 結果の解析
 for solution in result:
     print(f"q = {q.decode(solution.values)}")
+    print(f'energy = {solution.energy}')

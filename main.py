@@ -1,4 +1,5 @@
 import random
+import sys
 from amplify import *
 from amplify.client import FixstarsClient
 
@@ -38,7 +39,11 @@ q = gen.array(shape=(T,C,K))
 # バイナリ多項式の構築
 f = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
 g = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
-model = BinaryQuadraticModel(f+g)
+# 目的関数の設定
+# 暖かさ
+h = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k]) - W[t])) ** 2)
+
+model = BinaryQuadraticModel(f+g+h)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()

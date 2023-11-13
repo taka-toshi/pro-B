@@ -37,7 +37,8 @@ gen = SymbolGenerator(BinaryPoly)
 q = gen.array(shape=(T,C,K))
 # バイナリ多項式の構築
 f = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
-model = BinaryQuadraticModel(f)
+g = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
+model = BinaryQuadraticModel(f+g)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()

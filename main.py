@@ -46,13 +46,18 @@ for t in range(T):
 D = sum_poly(T, lambda t: sum_poly(C, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / C)
 
 # バイナリ多項式の構築
+# トップスとズボンはone-hot
 f1 = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
+# アウター ≤ 1
 f2 = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
+# 前日と同じ服は着ない
+f3 = sum_poly(T, lambda t: (sum_poly(C, lambda c: (sum_poly(K, lambda k: q[t, c, k] * q[(t+1)%T, c, k])))))
+
 # 目的関数の設定
 # 暖かさ
 g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
-model = BinaryQuadraticModel(f1+f2+g+D)
+model = BinaryQuadraticModel(f1+f2+f3+h+D)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()

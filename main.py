@@ -36,8 +36,16 @@ for c in range(C):
 # 変数配列の生成
 gen = SymbolGenerator(BinaryPoly)
 q = gen.array(shape=(T,C,K))
-# バイナリ多項式の構築
 
+# 選んだ服の暖かさ平均
+A = [0] * T
+for t in range(T):
+    A[t] = sum_poly(C, lambda c: sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) / C
+
+# 分散
+D = sum_poly(T, lambda t: sum_poly(C, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / C)
+
+# バイナリ多項式の構築
 # トップスとズボンはone-hot
 f1 = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
 # アウター ≤ 1
@@ -47,9 +55,9 @@ f3 = sum_poly(T, lambda t: (sum_poly(C, lambda c: (sum_poly(K, lambda k: q[t, c,
 
 # 目的関数の設定
 # 暖かさ
-h = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
+g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
-model = BinaryQuadraticModel(f1+f2+f3+h)
+model = BinaryQuadraticModel(f1+f2+f3+h+D)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()

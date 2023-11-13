@@ -57,7 +57,7 @@ f3 = sum_poly(T, lambda t: (sum_poly(C, lambda c: (sum_poly(K, lambda k: q[t, c,
 # 暖かさ
 g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
-model = BinaryQuadraticModel(f1+f2+f3+h+D)
+model = BinaryQuadraticModel(f1+f2+f3+g+D)
 
 # イジングマシンクライアントの設定
 client = FixstarsClient()

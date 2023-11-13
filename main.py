@@ -1,10 +1,5 @@
 import random
-from amplify import (
-    BinaryPoly,
-    BinaryQuadraticModel,
-    Solver,
-    SymbolGenerator,
-)
+from amplify import *
 from amplify.client import FixstarsClient
 
 my_token = ""
@@ -39,11 +34,9 @@ for c in range(C):
 
 # 変数配列の生成
 gen = SymbolGenerator(BinaryPoly)
-q = gen.array(shape=(2,2,2))
-print(q)
-
+q = gen.array(shape=(T,C,K))
 # バイナリ多項式の構築
-f = 1 - q[0][0][0]
+f = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
 model = BinaryQuadraticModel(f)
 
 # イジングマシンクライアントの設定

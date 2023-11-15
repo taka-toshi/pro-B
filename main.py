@@ -101,7 +101,7 @@ def check_array(q_array):
         for c in range(C):
             for k in range(K):
                 if q_array[t][c][k] * q_array[(t+1)%T][c][k] != 0:
-                    print(f"{t+1}・{t+2}日目の服(c={c}) != 0")
+                    print(f"{t+1}・{(t+2)%T}日目の服(c={c}) != 0")
 
 def print_array(q_array):
     # print w

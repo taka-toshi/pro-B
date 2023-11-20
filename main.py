@@ -42,9 +42,9 @@ def main():
     # 選んだ服の暖かさ平均
     A = [0] * T
     for t in range(T):
-        A[t] = sum_poly(C, lambda c: sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) / C
+        A[t] = sum_poly(C-1, lambda c: sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) / (C-1)
     # 分散
-    D = sum_poly(T, lambda t: sum_poly(C, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / C)
+    D = sum_poly(T, lambda t: sum_poly(C-1, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
 
     # トップスとズボンはone-hot
     f1 = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))

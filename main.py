@@ -59,12 +59,12 @@ def main():
     # 暖かさ
     g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
-    model = BinaryQuadraticModel(D+E+f1+f2+f3+g)
+    model = BinaryQuadraticModel(D+E+100*(f1+f2+f3)+g)
 
     # イジングマシンクライアントの設定
     client = FixstarsClient()
     client.token = my_token
-    client.parameters.timeout = 1000  # タイムアウト1秒
+    client.parameters.timeout = 5000  # タイムアウト1秒
 
     # ソルバーの実行
     solver = Solver(client)

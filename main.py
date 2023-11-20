@@ -72,8 +72,36 @@ def main():
     for solution in result:
         print(f'energy = {solution.energy}')
         q_array = q.decode(solution.values)
+        print("============")
+        check_array(q_array)
+        print("============")
         print_array(q_array)
         break # solutionが複数の場合も1つだけ出力
+
+def check_array(q_array):
+    # トップスとズボンはone-hot
+    for t in range(T):
+        for c in range(C-1):
+            sum_k = 0
+            for k in range(K):
+                sum_k += q_array[t][c][k]
+            if sum_k != 1:
+                print(f"{t+1}日目の(c={c}) != 1")
+
+    # アウター <= 1
+    for t in range(T):
+        sum_k = 0
+        for k in range(K):
+            sum_k += q_array[t][2][k]
+        if sum_k > 1:
+            print(f"{t+1}日目のアウター(c=2) > 1")
+
+    # 前日と同じ服は着ない
+    for t in range(T):
+        for c in range(C):
+            for k in range(K):
+                if q_array[t][c][k] * q_array[(t+1)%T][c][k] != 0:
+                    print(f"{t+1}・{(t+2)%T}日目の服(c={c}) != 0")
 
 def print_array(q_array):
     # print w

@@ -139,7 +139,7 @@ def print_array(q_array, alpha , beta, gamma):
             for k in range(K):
                 if q_array[t][c][k] == 1:
                     sum_w += w[c][k]
-                    if c!= 2:
+                    if c!= C-1:
                         sum_w_bar += w_bar[c][k]
                     else:
                         E_exist = True
@@ -148,7 +148,7 @@ def print_array(q_array, alpha , beta, gamma):
                 else:
                     print("    ",end=",")
             print("|",end="")
-        A = sum_w_bar / 2
+        A = sum_w_bar / (C-1)
         if E_exist:
             E = (E-A)**2
         D = 0.0
@@ -156,7 +156,7 @@ def print_array(q_array, alpha , beta, gamma):
             for k in range(K):
                 if q_array[t][c][k] == 1:
                     D += (w_bar[c][k] - A)**2
-        D /= 2
+        D /= (C-1)
         sum_D += D
         sum_E += E
         sa_sa = (W[t]-sum_w)**2

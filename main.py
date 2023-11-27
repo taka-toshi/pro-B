@@ -120,20 +120,31 @@ def print_array(q_array):
         for k in range(K):
             print(f"{w_bar[c][k]:.2f}",end=",")
         print("|",end="")
-    print(" W  sum_w")
+    print(" W  sum_w  差^2  A   D")
 
     for t in range(T):
         sum_w = 0
+        sum_w_bar = 0.0
+        A = 0.0
         print(f"{t+1}日目",end="|")
         for c in range(C):
             for k in range(K):
                 if q_array[t][c][k] == 1:
                     sum_w += w[c][k]
+                    if c!= 2:
+                        sum_w_bar += w_bar[c][k]
                     print(" ◯  ",end=",")
                 else:
                     print("    ",end=",")
             print("|",end="")
-        print(f" {W[t]:2d}  {sum_w:2d}")
+        A = sum_w_bar / 2
+        D = 0.0
+        for c in range(C-1):
+            for k in range(K):
+                if q_array[t][c][k] == 1:
+                    D += (w_bar[c][k] - A)**2
+            D /= 2
+        print(f" {W[t]:2d}  {sum_w:2d}   {(W[t]-sum_w)**2:3d}   {A:.2f}  {D:.2f}")
 
 if __name__ == '__main__':
     main()

@@ -143,7 +143,7 @@ def print_array(q_array):
             for k in range(K):
                 if q_array[t][c][k] == 1:
                     D += (w_bar[c][k] - A)**2
-            D /= 2
+        D /= 2
         print(f" {W[t]:2d}  {sum_w:2d}   {(W[t]-sum_w)**2:3d}   {A:.2f}  {D:.2f}")
 
 if __name__ == '__main__':

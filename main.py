@@ -60,7 +60,10 @@ def main():
     # 暖かさ
     g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
-    model = BinaryQuadraticModel(D+E+100*(f1+f2+f3)+g)
+    alpha = 100
+    beta = 25
+    gamma = 0.5
+    model = BinaryQuadraticModel(alpha*D+beta*E+100*(f1+f2+f3)+gamma*g)
 
     # イジングマシンクライアントの設定
     client = FixstarsClient()
@@ -78,7 +81,7 @@ def main():
         print("============")
         check_array(q_array)
         print("============")
-        print_array(q_array)
+        print_array(q_array, alpha , beta, gamma)
         break # solutionが複数の場合も1つだけ出力
 
 def check_array(q_array):
@@ -106,7 +109,7 @@ def check_array(q_array):
                 if q_array[t][c][k] * q_array[(t+1)%T][c][k] != 0:
                     print(f"{t+1}・{(t+2)%T}日目の服(c={c}) != 0")
 
-def print_array(q_array):
+def print_array(q_array, alpha , beta, gamma):
     # print w
     print("w    ",end="|")
     for c in range(C):
@@ -120,12 +123,17 @@ def print_array(q_array):
         for k in range(K):
             print(f"{w_bar[c][k]:.2f}",end=",")
         print("|",end="")
-    print(" W  sum_w  差^2  A   D")
+    print(" W  sum_w  差^2  A    D      E")
 
+    sum_D = 0.0
+    sum_E = 0.0
+    sum_sa_sa = 0
     for t in range(T):
         sum_w = 0
         sum_w_bar = 0.0
         A = 0.0
+        E = 0.0
+        E_exist = False
         print(f"{t+1}日目",end="|")
         for c in range(C):
             for k in range(K):
@@ -133,18 +141,29 @@ def print_array(q_array):
                     sum_w += w[c][k]
                     if c!= 2:
                         sum_w_bar += w_bar[c][k]
+                    else:
+                        E_exist = True
+                        E = w_bar[c][k]
                     print(" ◯  ",end=",")
                 else:
                     print("    ",end=",")
             print("|",end="")
         A = sum_w_bar / 2
+        if E_exist:
+            E = (E-A)**2
         D = 0.0
         for c in range(C-1):
             for k in range(K):
                 if q_array[t][c][k] == 1:
                     D += (w_bar[c][k] - A)**2
         D /= 2
-        print(f" {W[t]:2d}  {sum_w:2d}   {(W[t]-sum_w)**2:3d}   {A:.2f}  {D:.2f}")
+        sum_D += D
+        sum_E += E
+        sa_sa = (W[t]-sum_w)**2
+        sum_sa_sa += sa_sa
+        print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}   {A:.2f}  {D:.3f}  {E:.3f}")
+    print(f"sum差^2*γ({gamma}): {gamma*sum_sa_sa:.1f}\nsumD*α({alpha}): {alpha*sum_D:.5f}\nsumE*β({beta}): {beta*sum_E:.3f}")
+    print(f"合計: {alpha*sum_D+beta*sum_E+gamma*sum_sa_sa}")
 
 if __name__ == '__main__':
     main()

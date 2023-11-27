@@ -47,7 +47,8 @@ def main():
     # 分散(トップスとボトムのみ)
     D = sum_poly(T, lambda t: sum_poly(C-1, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
 
-    E = sum_poly(T, lambda t: ((A[t]- 2 * sum_poly(K, lambda k: w_bar[2][k] * q[t, 2, k])) ** 2))
+    E = sum_poly(T, lambda t: (sum_poly(K, lambda k: w_bar[2][k] * q[t, 2, k]) - A[t] * sum_poly(K, lambda k: q[t, 2, k])) ** 2)
+
     # トップスとズボンはone-hot
     f1 = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
     # アウター ≤ 1

@@ -1,6 +1,6 @@
 import random
 import sys
-from amplify import *
+from amplify import sum_poly, SymbolGenerator, BinaryPoly, Solver, BinaryQuadraticModel
 from amplify.client import FixstarsClient
 
 my_token = ""
@@ -35,6 +35,7 @@ for c in range(C):
 
 def main():
     # 変数配列の生成
+    # type : ignore
     gen = SymbolGenerator(BinaryPoly)
     q = gen.array(shape=(T,C,K))
     # バイナリ多項式の構築
@@ -45,12 +46,17 @@ def main():
         # 平均（トップスとボトムのみ）
         A[t] = sum_poly(C-1, lambda c: sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) / (C-1)
     # 分散(トップスとボトムのみ)
-    D = sum_poly(T, lambda t: sum_poly(C-1, lambda c: ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
+    D = sum_poly(T, lambda t: 
+                sum_poly(C-1, lambda c: 
+                        ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
 
-    E = sum_poly(T, lambda t: (sum_poly(K, lambda k: w_bar[2][k] * q[t, 2, k]) - A[t] * sum_poly(K, lambda k: q[t, 2, k])) ** 2)
+    E = sum_poly(T, lambda t: 
+                (sum_poly(K, lambda k: w_bar[2][k] * q[t, 2, k]) - A[t] * sum_poly(K, lambda k: q[t, 2, k])) ** 2)
 
     # トップスとズボンはone-hot
-    f1 = sum_poly(T, lambda t: (sum_poly(C-1, lambda c: (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
+    f1 = sum_poly(T, lambda t: 
+                  (sum_poly(C-1, lambda c: 
+                            (sum_poly(K, lambda k: q[t, c, k]) - 1) ** 2)))
     # アウター ≤ 1
     f2 = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
     # 前日と同じ服は着ない

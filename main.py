@@ -6,7 +6,7 @@ from amplify.client import FixstarsClient
 # ========================================================
 T = 5 # 0-4の5日間
 C = 3 # c = 0 : ズボン, c = 1 : トップス, c = 2 :アウター
-K = 5 # 0-4の種類
+K = 7 # 0-6の種類
 
 W = [0] * T #各日の必要な暖かさ
 for t in range(T):
@@ -16,8 +16,12 @@ w = [[0] * K for _ in range(C)] #各種類の暖かさ
 M = [0] * C # 各cについてwのmax
 m = [0] * C # 各cについてwのmin
 for c in range(C):
-    for k in range(K):
-        w[c][k] = random.randint(3,17)
+    if c != C-1:
+        for k in range(K):
+            w[c][k] = random.randint(3,17)
+    else:
+        for k in range(K):
+            w[c][k] = random.randint(8,17)
     M[c] = max(w[c])
     m[c] = min(w[c])
 
@@ -37,7 +41,7 @@ def main():
     A = [0] * T
     for t in range(T):
         A[t] = sum_poly(C-1, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) / (C-1)
-    
+
     # 分散（ボトムズとトップス）
     D = sum_poly(T, lambda t: 
                 sum_poly(C-1, lambda c: 
@@ -62,14 +66,14 @@ def main():
 
     # パラメータの重さ調整
     alpha = 1
-    beta = 1
+    beta = 0.01
     gamma = 1
     model = BinaryQuadraticModel(alpha*D+beta*E+100*(f1+f2+f3)+gamma*g)
 
     # イジングマシンクライアントの設定
     client = FixstarsClient()
     client.token = my_token
-    client.parameters.timeout = 10000  # タイムアウト5秒
+    client.parameters.timeout = 5000  # タイムアウト5秒
 
     # ソルバーの実行
     solver = Solver(client)

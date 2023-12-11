@@ -36,16 +36,16 @@ def main():
     # 選んだ服の暖かさ平均（ボトムズc=0とトップスc=1のみ）
     A = [0] * T
     for t in range(T):
-        A[t] = sum_poly(C-1, lambda c: sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) / (C-1)
+        A[t] = sum_poly(C-1, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) / (C-1)
     
     # 分散（ボトムズとトップス）
     D = sum_poly(T, lambda t: 
                 sum_poly(C-1, lambda c: 
-                        ((sum_poly(K, lambda k: w_bar[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
+                        ((sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - A[t]) ** 2) / (C-1))
 
     # アウターの暖かさ（着るなら平均A[t]に近くなるようにする）
     E = sum_poly(T, lambda t: 
-                (sum_poly(K, lambda k: w_bar[2][k] * q[t, 2, k]) - A[t] * sum_poly(K, lambda k: q[t, 2, k])) ** 2)
+                (sum_poly(K, lambda k: w[2][k] * q[t, 2, k]) - A[t] * sum_poly(K, lambda k: q[t, 2, k])) ** 2)
 
     # トップスとズボンはone-hot
     f1 = sum_poly(T, lambda t: 
@@ -61,15 +61,15 @@ def main():
     g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
     # パラメータの重さ調整
-    alpha = 100
-    beta = 25
-    gamma = 0.5
+    alpha = 1
+    beta = 1
+    gamma = 1
     model = BinaryQuadraticModel(alpha*D+beta*E+100*(f1+f2+f3)+gamma*g)
 
     # イジングマシンクライアントの設定
     client = FixstarsClient()
     client.token = my_token
-    client.parameters.timeout = 5000  # タイムアウト5秒
+    client.parameters.timeout = 10000  # タイムアウト5秒
 
     # ソルバーの実行
     solver = Solver(client)
@@ -131,7 +131,7 @@ def print_array(q_array, alpha , beta, gamma):
     sum_sa_sa = 0
     for t in range(T):
         sum_w = 0
-        sum_w_bar = 0.0
+        sum_w_12 = 0.0
         A = 0.0
         E = 0.0
         E_exist = False
@@ -141,22 +141,22 @@ def print_array(q_array, alpha , beta, gamma):
                 if q_array[t][c][k] == 1:
                     sum_w += w[c][k]
                     if c!= C-1:
-                        sum_w_bar += w_bar[c][k]
+                        sum_w_12 += w[c][k]
                     else:
                         E_exist = True
-                        E = w_bar[c][k]
+                        E = w[c][k]
                     print(" ◯  ",end=",")
                 else:
                     print("    ",end=",")
             print("|",end="")
-        A = sum_w_bar / (C-1)
+        A = sum_w_12 / (C-1)
         if E_exist:
             E = (E-A)**2
         D = 0.0
         for c in range(C-1):
             for k in range(K):
                 if q_array[t][c][k] == 1:
-                    D += (w_bar[c][k] - A)**2
+                    D += (w[c][k] - A)**2
         D /= (C-1)
         sum_D += D
         sum_E += E

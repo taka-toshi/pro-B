@@ -10,7 +10,7 @@ K = 7 # 0-6の種類
 
 W = [0] * T #各日の必要な暖かさ
 for t in range(T):
-    W[t] = random.randint(10,50)
+    W[t] = random.randint(1,9)*5
 
 w = [[0] * K for _ in range(C)] #各種類の暖かさ
 M = [0] * C # 各cについてwのmax
@@ -18,10 +18,10 @@ m = [0] * C # 各cについてwのmin
 for c in range(C):
     if c != C-1:
         for k in range(K):
-            w[c][k] = random.randint(3,17)
+            w[c][k] = random.randint(2,16)
     else:
         for k in range(K):
-            w[c][k] = random.randint(8,17)
+            w[c][k] = random.randint(10,16)
     M[c] = max(w[c])
     m[c] = min(w[c])
 
@@ -65,9 +65,9 @@ def main():
     g = sum_poly(T, lambda t: (sum_poly(C, lambda c: sum_poly(K, lambda k: w[c][k] * q[t, c, k])) - W[t]) ** 2)
 
     # パラメータの重さ調整
-    alpha = 1
+    alpha = 10
     beta = 0.01
-    gamma = 1
+    gamma = 3
     model = BinaryQuadraticModel(alpha*D+beta*E+100*(f1+f2+f3)+gamma*g)
 
     # イジングマシンクライアントの設定

@@ -1,5 +1,5 @@
 import random
-import sys
+import required_warmth
 
 from amplify import (BinaryPoly, BinaryQuadraticModel, Solver, SymbolGenerator, sum_poly)
 from amplify.client import FixstarsClient
@@ -9,9 +9,11 @@ T = 5 # 0-4の5日間
 C = 3 # c = 0 : ズボン, c = 1 : トップス, c = 2 :アウター
 K = 7 # 0-6の種類
 
+warmth_seven = required_warmth.required_warmth()
 W = [0] * T #各日の必要な暖かさ
 for t in range(T):
-    W[t] = random.randint(1,9)*5
+    # W[t] = random.randint(1,9)*5
+    W[t] = warmth_seven[t]
 
 w = [[0] * K for _ in range(C)] #各種類の暖かさ
 M = [0] * C # 各cについてwのmax

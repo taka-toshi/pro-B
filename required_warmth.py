@@ -1,4 +1,7 @@
+import sys
 import math
+import past_humidity
+import forecast_temp
 
 weather_data = []
 DI_list = []
@@ -46,16 +49,21 @@ def calculate_required_warmth(DI_list):
             required_warmth.append(rank * 5)
     return required_warmth
 
-def main():
+def required_warmth():
+    humidity = past_humidity.past_humidity() ## int
+    forecast = forecast_temp.forecast_temp() ## list
+    # print(humidity)
+    # print(forecast)
     weather_data = [
-        (24, 30),(20, 59),(21, 30),(19, 10),(17, 60),(15, 55),(13, 50)
+        (forecast[i], humidity) for i in range(len(forecast))
     ]
+    # print(weather_data)
     check_weather_data(weather_data)
     DI_list = calculate_DI(weather_data)
     #DI_list = [54,55,59,60,64,65,69,70,74,75,79,80,84,85,89,90]
-    print(DI_list)
+    # print(DI_list)
     required_warmth = calculate_required_warmth(DI_list)
-    print(required_warmth)
+    return required_warmth ## list
 
-if __name__ == '__main__':
-    main()
+# if __name__ == "__main__":
+#     required_warmth()

@@ -122,16 +122,16 @@ def print_array(q_array, alpha , beta, gamma):
     print("w    ",end="|")
     for c in range(C):
         for k in range(K):
-            print(f"{w[c][k]:4d}",end=",")
+            print(f"{w[c][k]:2d}",end=",")
         print("|",end="")
     print()
     # print w_bar
     print("w_bar",end="|")
     for c in range(C):
         for k in range(K):
-            print(f"{w_bar[c][k]:.2f}",end=",")
+            print(f"{w_bar[c][k]:2.0f}",end=",")
         print("|",end="")
-    print(" W  sum_w  差^2  A    D      E")
+    print(" W  sum_w 差^2 A      D      E")
 
     sum_D = 0.0
     sum_E = 0.0
@@ -152,9 +152,9 @@ def print_array(q_array, alpha , beta, gamma):
                     else:
                         E_exist = True
                         E = w[c][k]
-                    print(" ◯  ",end=",")
+                    print("◯ ",end=",")
                 else:
-                    print("    ",end=",")
+                    print("  ",end=",")
             print("|",end="")
         A = sum_w_12 / (C-1)
         if E_exist:
@@ -169,7 +169,7 @@ def print_array(q_array, alpha , beta, gamma):
         sum_E += E
         sa_sa = (W[t]-sum_w)**2
         sum_sa_sa += sa_sa
-        print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}   {A:.2f}  {D:.3f}  {E:.3f}")
+        print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}  {A:4.1f}  {D:6.2f}  {E:6.2f}")
     print(f"sum差^2*γ({gamma}): {gamma*sum_sa_sa:.1f}\nsumD*α({alpha}): {alpha*sum_D:.5f}\nsumE*β({beta}): {beta*sum_E:.3f}")
     print(f"合計: {alpha*sum_D+beta*sum_E+gamma*sum_sa_sa}")
 

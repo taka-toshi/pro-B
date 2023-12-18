@@ -67,15 +67,14 @@ def forecast_temp():
             tempsMin = wf2["tempsMin"]
             tempsMax = wf2["tempsMax"]
 
-    valid2 = [date.split("T")[0] for date in f2["timeDefines"]]
-
     ## 1日後の天気予報
     if tempsMin[0] == "":
         tempsMin[0] = min(tomorrow_temps)
         tempsMax[0] = max(tomorrow_temps)
 
     ## debugging
-    df = pd.DataFrame({"min":tempsMin, "max":tempsMax}, index=valid2)
+    # valid2 = [date.split("T")[0] for date in f2["timeDefines"]]
+    # df = pd.DataFrame({"min":tempsMin, "max":tempsMax}, index=valid2)
     # print(tabulate(df, headers="keys", tablefmt="psql"))
 
     ## 平均

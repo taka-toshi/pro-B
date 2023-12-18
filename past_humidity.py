@@ -4,7 +4,6 @@ from tabulate import tabulate
 
 def past_humidity():
     year , month , day = datetime.now().strftime("%Y,%m,%d").split(",")
-    day = 7
     prec_no = 44 # 東京都
     block_no = 47662 # 東京
 

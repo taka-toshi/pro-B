@@ -1,6 +1,7 @@
 import random
 import sys
-from amplify import sum_poly, SymbolGenerator, BinaryPoly, Solver, BinaryQuadraticModel
+
+from amplify import (BinaryPoly, BinaryQuadraticModel, Solver, SymbolGenerator, sum_poly)
 from amplify.client import FixstarsClient
 
 # ========================================================

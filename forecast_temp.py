@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import sys
 import pandas as pd
 import requests
 from tabulate import tabulate
@@ -65,17 +65,22 @@ for i, tt in enumerate(tomorrow_temps):
 for wf2 in f2["areas"]:
     if wf2["area"]["name"] == forecast_area:
         tempsMin = wf2["tempsMin"]
-        #tempsMinUpper = wf2["tempsMinUpper"]
-        #tempsMinLower = wf2["tempsMinLower"]
         tempsMax = wf2["tempsMax"]
-        #tempsMaxUpper = wf2["tempsMaxUpper"]
-        #tempsMaxLower = wf2["tempsMaxLower"]
 
 valid2 = [date.split("T")[0] for date in f2["timeDefines"]]
 
+## 1日後の天気予報
 if tempsMin[0] == "":
     tempsMin[0] = min(tomorrow_temps)
     tempsMax[0] = max(tomorrow_temps)
 
+## debugging
 df = pd.DataFrame({"min":tempsMin, "max":tempsMax}, index=valid2)
 print(tabulate(df, headers="keys", tablefmt="psql"))
+
+## 平均
+ave = []
+for i in range(len(tempsMin)):
+    ave.append((int(tempsMin[i]) + int(tempsMax[i])) / 2)
+print(ave)
+

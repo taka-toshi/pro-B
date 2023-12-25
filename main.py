@@ -12,7 +12,7 @@ K = 12 # 0-6の種類
 warmth_seven = required_warmth.required_warmth()
 W = [0] * T #各日の必要な暖かさ
 for t in range(T):
-    # W[t] = random.randint(1,9)*5
+    # W[t] = random.randint(1,10) * 5
     W[t] = warmth_seven[t]
 
 w = [[0] * K for _ in range(C)] #各種類の暖かさ
@@ -21,10 +21,10 @@ m = [0] * C # 各cについてwのmin
 for c in range(C):
     if c != C-1:
         for k in range(K):
-            w[c][k] = random.randint(2,16)
+            w[c][k] = random.randint(2,18)
     else:
         for k in range(K):
-            w[c][k] = random.randint(10,16)
+            w[c][k] = random.randint(10,18)
     M[c] = max(w[c])
     m[c] = min(w[c])
 

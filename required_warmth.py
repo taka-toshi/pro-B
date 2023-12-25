@@ -22,7 +22,8 @@ def calculate_DI(weather_data):
 
 def calculate_required_warmth(DI_list):
     # 必要な暖かさを計算
-    # ~55 → 8 * 5
+    # ~50 → 9 * 5
+    # 50~55 → 8 * 5
     # 55~60 → 7 * 5
     # 60~65 → 6 * 5
     # 65~70 → 5 * 5
@@ -32,16 +33,16 @@ def calculate_required_warmth(DI_list):
     # 85~ → 1 * 5
     required_warmth = []
     for DI in DI_list:
-        DI -= 55
+        DI -= 50
         if DI < 0:
-            required_warmth.append(8 * 5)
-        elif DI >=30:
+            required_warmth.append(9 * 5)
+        elif DI >=35:
             required_warmth.append(1 * 5)
         else:
-            rank = 7-math.floor(DI / 5)
+            rank = 8 - math.floor(DI / 5)
             if type(rank) is not int:
                 raise ValueError
-            if rank < 2 or rank > 7:
+            if rank < 2 or rank > 8:
                 raise ValueError
             required_warmth.append(rank * 5)
     return required_warmth

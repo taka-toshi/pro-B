@@ -62,6 +62,8 @@ def main():
     f2 = sum_poly(T, lambda t: (1- sum_poly(K, lambda k: q[t, 2, k]) * 2) ** 2 -1)
     # 前日と同じ服は着ない
     f3 = sum_poly(T, lambda t: (sum_poly(C, lambda c: (sum_poly(K, lambda k: q[t, c, k] * q[(t+1)%T, c, k])))))
+    # 1回着た服はきない
+    f4 = sum_poly(C, lambda c: (sum_poly(K, lambda k: ( 1 - sum_poly(T, lambda t: q[t, c, k])*2)**2 -1)))
 
     # 目的関数の設定
     # 暖かさ
@@ -71,7 +73,7 @@ def main():
     alpha = 10
     # beta = 0.01
     gamma = 3
-    model = BinaryQuadraticModel(alpha*D+100*(f1+f2+f3)+gamma*g)
+    model = BinaryQuadraticModel(alpha*D+100*(f1+f2+f3)+10*f4+gamma*g)
 
     # イジングマシンクライアントの設定
     client = FixstarsClient()

@@ -37,7 +37,11 @@ def forecast_temp():
         print("please select")
         for i, area in enumerate(f1_and_f2_area):
             print("" + str(i) + ": " + area + "")
-        forecast_area = f1_and_f2_area[int(input())] #inputじゃなくする？？
+        tokyo_index = 0
+        # ooshima_index = 1
+        # hachijoujima_index = 2
+        # chihijima_index = 3
+        forecast_area = f1_and_f2_area[tokyo_index] #inputじゃなくする？？
 
     print(forecast_area)
 

@@ -163,7 +163,7 @@ def print_array(q_array, alpha , gamma):
         sa_sa = (W[t]-sum_w)**2
         sum_sa_sa += sa_sa
         print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}  {A:4.1f}  {D:6.2f}")
-    print(f"sum差^2*γ({gamma}): {gamma*sum_sa_sa:.1f}\nsumD*α({alpha}): {alpha*sum_D:.5f}\n")
+    print(f"sum差^2*α({gamma}): {gamma*sum_sa_sa:.1f}\nsumD*β({alpha}): {alpha*sum_D:.5f}\n")
     print(f"合計: {alpha*sum_D+gamma*sum_sa_sa}")
 
 if __name__ == '__main__':

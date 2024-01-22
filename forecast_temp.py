@@ -35,8 +35,8 @@ def forecast_temp():
         forecast_area = f1_and_f2_area[0]
     else:
         # print("please select")
-        for i, area in enumerate(f1_and_f2_area):
-            print("" + str(i) + ": " + area + "")
+        #for i, area in enumerate(f1_and_f2_area):
+        #    print("" + str(i) + ": " + area + "")
         region_index = {"tokyo": 0, "ooshima": 1, "hachijoujima": 2, "chihijima": 3}
         forecast_area = f1_and_f2_area[region_index["tokyo"]] #inputじゃなくする？？
     print("selected area: " + forecast_area)
@@ -45,7 +45,7 @@ def forecast_temp():
     # 明日の天気予報
     for wf1 in f1["areas"]:
         if wf1["area"]["name"] == forecast_area:
-            print("area code: " + wf1["area"]["code"])
+            #print("area code: " + wf1["area"]["code"])
             tomorrow_temps = wf1["temps"]
 
     # 今日の日付を取得

@@ -126,13 +126,13 @@ def print_array(q_array, alpha , gamma):
         for k in range(K):
             print(f"{w[c][k]:2d}",end=",")
         print("|",end="")
-    print()
-    # print w_bar
-    print("w_bar",end="|")
-    for c in range(C):
-        for k in range(K):
-            print(f"{w_bar[c][k]:2.0f}",end=",")
-        print("|",end="")
+    #print()
+    ## print w_bar
+    #print("w_bar",end="|")
+    #for c in range(C):
+    #    for k in range(K):
+    #        print(f"{w_bar[c][k]:2.0f}",end=",")
+    #    print("|",end="")
     print(" W  sum_w 差^2 A      D")
 
     sum_D = 0.0

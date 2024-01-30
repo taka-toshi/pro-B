@@ -102,7 +102,7 @@ def check_array(q_array):
             for k in range(K):
                 sum_k += q_array[t][c][k]
             if sum_k != 1:
-                print(f"{t+1}日目の(c={c}) != 1")
+                print(f"<f1> {t+1}日目の(c={c}) != 1")
 
     # アウター <= 1
     for t in range(T):
@@ -110,14 +110,14 @@ def check_array(q_array):
         for k in range(K):
             sum_k += q_array[t][2][k]
         if sum_k > 1:
-            print(f"{t+1}日目のアウター(c=2) > 1")
+            print(f"<f2> {t+1}日目のアウター(c=2) > 1")
 
     # 前日と同じ服は着ない
     for t in range(T):
         for c in range(C):
             for k in range(K):
                 if q_array[t][c][k] * q_array[(t+1)%T][c][k] != 0:
-                    print(f"{t+1}・{(t+2)%T}日目の服(c={c}) != 0")
+                    print(f"<f3> {t+1}・{(t+2)%T}日目の服(c={c}) != 0")
 
 def print_array(q_array, alpha , gamma):
     # print w
@@ -163,7 +163,7 @@ def print_array(q_array, alpha , gamma):
         sa_sa = (W[t]-sum_w)**2
         sum_sa_sa += sa_sa
         print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}  {A:4.1f}  {D:6.2f}")
-    print(f"sum差^2*α({gamma}): {gamma*sum_sa_sa:.1f}\nsumD*δ({alpha}): {alpha*sum_D:.5f}\n")
+    print(f"g(=sum差^2)*α({gamma}): {gamma*sum_sa_sa:.1f}\nf5(=sumD)*δ({alpha}): {alpha*sum_D:.5f}\n")
     print(f"合計: {alpha*sum_D+gamma*sum_sa_sa}")
 
 if __name__ == '__main__':

@@ -91,7 +91,7 @@ def main():
         print("============")
         check_array(q_array)
         print("============")
-        print_array(q_array, alpha ,gamma)
+        print_array(q_array, alpha ,gamma, solution.energy)
         break # solutionが複数の場合も1つだけ出力
 
 def check_array(q_array):
@@ -119,7 +119,7 @@ def check_array(q_array):
                 if q_array[t][c][k] * q_array[(t+1)%T][c][k] != 0:
                     print(f"<f3> {t+1}・{(t+2)%T}日目の服(c={c}) != 0")
 
-def print_array(q_array, alpha , gamma):
+def print_array(q_array, alpha , gamma, energy):
     # print w
     print("w    ",end="|")
     for c in range(C):
@@ -133,7 +133,7 @@ def print_array(q_array, alpha , gamma):
     #    for k in range(K):
     #        print(f"{w_bar[c][k]:2.0f}",end=",")
     #    print("|",end="")
-    print(" W  sum_w 差^2 A      D")
+    print(" W  sum_w  差^2=g_t  A    D=f5_t")
 
     sum_D = 0.0
     sum_sa_sa = 0
@@ -162,9 +162,11 @@ def print_array(q_array, alpha , gamma):
         sum_D += D
         sa_sa = (W[t]-sum_w)**2
         sum_sa_sa += sa_sa
-        print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}  {A:4.1f}  {D:6.2f}")
-    print(f"g(=sum差^2)*α({gamma}): {gamma*sum_sa_sa:.1f}\nf5(=sumD)*δ({alpha}): {alpha*sum_D:.5f}\n")
-    print(f"合計: {alpha*sum_D+gamma*sum_sa_sa}")
+        print(f" {W[t]:2d}  {sum_w:2d}   {sa_sa:3d}       {A:4.1f}  {D:6.2f}")
+    print(f"g*α({gamma}): {gamma*sum_sa_sa:.1f}\nf5*δ({alpha}): {alpha*sum_D:.2f}")
+    f4_ene = energy - (alpha*sum_D+gamma*sum_sa_sa)
+    print(f"f4*γ(10): {f4_ene:.2f}") # this value is true value if f1-f3 is satisfied
+    #print(f"合計: {alpha*sum_D+gamma*sum_sa_sa}")
 
 if __name__ == '__main__':
     my_token = ""
